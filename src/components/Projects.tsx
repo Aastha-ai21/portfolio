@@ -24,6 +24,12 @@ const diagrams: Record<string, ReactNode> = {
 /* Flagship cards                                                      */
 /* ------------------------------------------------------------------ */
 
+/** Business-focused wording where a project also appears in the Featured AI block, so the two don't repeat. */
+const businessSummary: Record<string, string> = {
+  'recruitment-analyzer':
+    'A multi-tenant SaaS for HR teams: job openings, AI-assisted resume screening and evidence-based candidate scores, with humans making the final call.',
+}
+
 function FlagshipCard({ p, i }: { p: Project; i: number }) {
   const open = useOpenProject()
   return (
@@ -39,7 +45,7 @@ function FlagshipCard({ p, i }: { p: Project; i: number }) {
             {p.name}
           </button>
         </h3>
-        <p>{p.summary}</p>
+        <p>{businessSummary[p.id] ?? p.summary}</p>
         <ul className="chips">
           {p.tech.map((t) => (
             <li key={t} className="chip">
@@ -118,32 +124,37 @@ function SpotlightSeries() {
 /* Complete collection                                                 */
 /* ------------------------------------------------------------------ */
 
+/** Projects already shown in the Featured AI or Real-World Business parts. */
+const shownAbove = new Set([...spotlights.map((s) => s.project.id), ...featuredIds])
+
 function Collection() {
   const open = useOpenProject()
   return (
-    <ul className="collection" aria-label="All projects">
-      {projects.map((p) => (
-        <li key={p.id} className="mini-wrap">
-          <Tilt className="mini glass" max={5}>
-            <div className="mini__top">
-              <i className="mini__planet" style={{ '--h': p.hue } as CSSProperties} aria-hidden="true" />
-            </div>
-            <h4>
-              <button type="button" className="stretch" onClick={() => open(p.id)}>
-                {p.name}
-              </button>
-            </h4>
-            <p>{p.summary}</p>
-            <ul className="chips">
-              {p.tech.slice(0, 3).map((t) => (
-                <li key={t} className="chip">
-                  {t}
-                </li>
-              ))}
-              {p.tech.length > 3 && <li className="chip">+{p.tech.length - 3}</li>}
-            </ul>
-          </Tilt>
-        </li>
+    <ul className="collection" aria-label="More projects">
+      {projects
+        .filter((p) => !shownAbove.has(p.id))
+        .map((p) => (
+          <li key={p.id} className="mini-wrap">
+            <Tilt className="mini glass" max={5}>
+              <div className="mini__top">
+                <i className="mini__planet" style={{ '--h': p.hue } as CSSProperties} aria-hidden="true" />
+              </div>
+              <h4>
+                <button type="button" className="stretch" onClick={() => open(p.id)}>
+                  {p.name}
+                </button>
+              </h4>
+              <p>{p.summary}</p>
+              <ul className="chips">
+                {p.tech.slice(0, 3).map((t) => (
+                  <li key={t} className="chip">
+                    {t}
+                  </li>
+                ))}
+                {p.tech.length > 3 && <li className="chip">+{p.tech.length - 3}</li>}
+              </ul>
+            </Tilt>
+          </li>
       ))}
     </ul>
   )
@@ -159,18 +170,29 @@ export default function Projects() {
           <span id="projects-h">Projects</span>
         </SectionHead>
 
+        <div className="part">
+          <h3 className="part__h">
+            Featured <em>AI</em> Projects
+          </h3>
+          <p className="part__sub">Where I put models to work: vision, learning and language.</p>
+        </div>
+        <SpotlightSeries />
+
+        <div className="part">
+          <h3 className="part__h">Real-World Business Projects</h3>
+          <p className="part__sub">
+            Tools built for real teams and clients — solving everyday business problems at work.
+          </p>
+        </div>
         <div className="flagships">
           {featuredIds.map((id, i) => (
             <FlagshipCard key={id} p={projectById(id)} i={i} />
           ))}
         </div>
 
-        <h3 className="sub">Featured AI Projects</h3>
-        <SpotlightSeries />
-
-        <h3 className="sub">
-          Complete collection <span className="sub__count">{projects.length}</span>
-        </h3>
+        <div className="part">
+          <h3 className="part__h">More Projects</h3>
+        </div>
         <Collection />
       </div>
     </section>
