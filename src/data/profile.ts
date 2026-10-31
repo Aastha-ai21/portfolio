@@ -14,6 +14,8 @@ export const profile = {
     phoneHref: 'tel:+919152473255',
     linkedin: 'https://www.linkedin.com/in/aastha-bhagat-ai2112',
     linkedinLabel: 'linkedin.com/in/aastha-bhagat-ai2112',
+    instagram: 'https://www.instagram.com/aastha.say.cheese/',
+    instagramLabel: '@aastha.say.cheese',
   },
 
   experience: {

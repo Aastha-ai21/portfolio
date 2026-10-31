@@ -27,7 +27,7 @@ Everything personal lives in `src/data/`:
 | `skills.ts`   | The 5 skill constellations and which projects each skill appears in               |
 
 ### Contact details
-Email, phone and LinkedIn are set in `contact` in `src/data/profile.ts` and shown as three cards. The message form opens the visitor's email app with the message pre-filled (no server involved).
+Email, phone, LinkedIn and Instagram are set in `contact` in `src/data/profile.ts` and shown as four cards.
 
 ### Also worth doing before launch
 - Add a social-share image (e.g. `public/og.png`, 1200×630) and `og:image` / `og:url` / canonical tags in `index.html`.
