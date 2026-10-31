@@ -189,6 +189,9 @@
   color: var(--muted);
   font-size: 0.92rem;
 }
+.skills__desc {
+  color: var(--ink-2);
+}
 .skills__sub {
   color: var(--ink-2);
 }

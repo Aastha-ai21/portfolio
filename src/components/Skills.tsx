@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from 'react'
 import { Reveal, SectionHead, useOpenProject } from './primitives'
-import { skillCategories, totalSkills } from '../data/skills'
+import { skillCategories, skillDescription, totalSkills } from '../data/skills'
 import { projectById } from '../data/projects'
 
 const ROW = 54
@@ -32,7 +32,7 @@ export default function Skills() {
         <SectionHead
           index="02"
           eyebrow="Skills"
-          lead={`${totalSkills} tools and techniques across five constellations. Select a star to see where it shows up in my projects — grouped by area, not ranked by level.`}
+          lead={`${totalSkills} tools and techniques across five constellations.`}
         >
           <span id="skills-h">
             Five constellations <em>of craft.</em>
@@ -85,6 +85,7 @@ export default function Skills() {
               {selected ? (
                 <>
                   <h3>{selected.name}</h3>
+                  <p className="skills__desc">{skillDescription(selected.name)}</p>
                   {selected.projects?.length ? (
                     <>
                       <p className="skills__hint">Appears in</p>
@@ -98,17 +99,12 @@ export default function Skills() {
                         ))}
                       </ul>
                     </>
-                  ) : (
-                    <p className="skills__hint">
-                      Part of my toolkit — not tied to one of the showcased projects yet.
-                    </p>
-                  )}
+                  ) : null}
                 </>
               ) : (
                 <>
                   <h3>{cat.heading ?? cat.blurb}</h3>
                   {cat.heading && <p className="skills__sub">{cat.blurb}</p>}
-                  <p className="skills__hint">Select a star to see where it’s used. Brighter stars are linked to projects.</p>
                 </>
               )}
             </aside>
