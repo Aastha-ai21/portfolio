@@ -1,0 +1,353 @@
+/* ================= AI Skills universe ================= */
+.aisk {
+  padding-top: 0; /* sits right under the Skills board */
+}
+.aisk__head {
+  margin-bottom: clamp(24px, 4vw, 44px);
+  max-width: 640px;
+}
+.aisk__head h2 {
+  font-family: var(--font-display);
+  font-weight: 330;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.aisk__head em {
+  font-style: italic;
+  font-weight: 300;
+  background: linear-gradient(100deg, var(--lavender), var(--pink) 60%, var(--ice));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+.aisk__head p {
+  margin-top: 14px;
+  color: var(--ink-2);
+}
+
+.aisk__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+
+/* --- orbit --- */
+.aorbit {
+  position: relative;
+  width: min(100%, 620px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+.acore {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.6vw, 1.6rem);
+  color: #1a1040;
+  background: radial-gradient(circle at 35% 30%, #fff 0%, #e4d9ff 30%, #a98cf5 70%, #6a47d6);
+  box-shadow:
+    0 0 40px 8px rgba(190, 160, 255, 0.45),
+    0 0 120px 30px rgba(139, 108, 240, 0.28);
+}
+.acore::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 188, 255, 0.4);
+  animation: ping-ring 3.2s infinite;
+}
+.aring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px dashed hsl(var(--h) 80% 80% / 0.28);
+  animation: aspin var(--dur) linear infinite var(--dir);
+  transition: opacity 0.4s;
+}
+.aorbit:hover .aring,
+.aorbit:focus-within .aring,
+.aorbit[data-paused] .aring,
+.aorbit:hover .moon,
+.aorbit:focus-within .moon,
+.aorbit[data-paused] .moon {
+  animation-play-state: paused;
+}
+/* a ring picked in the list stays lit; the others fade back */
+.aorbit[data-ring] .aring:not(.is-ring) {
+  opacity: 0.22;
+}
+.aring.is-ring {
+  border-color: hsl(var(--h) 85% 80% / 0.7);
+  border-style: solid;
+}
+@keyframes aspin {
+  to {
+    rotate: 360deg;
+  }
+}
+.moon {
+  position: absolute;
+  width: 18px;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  padding: 0;
+  border: 0;
+  background: none;
+  /* counter-spin against the ring so the labels always read upright */
+  animation: aspin var(--dur) linear infinite var(--rdir);
+}
+.moon::before {
+  content: '';
+  position: absolute;
+  inset: -12px; /* comfortable touch target */
+  border-radius: 50%;
+}
+.moon__dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, hsl(var(--h) 90% 92%), hsl(var(--h) 70% 62%) 55%, hsl(var(--h) 55% 28%));
+  box-shadow: 0 0 12px hsl(var(--h) 85% 65% / 0.6);
+  transition:
+    scale 0.35s var(--ease),
+    box-shadow 0.35s;
+}
+.moon__label {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  translate: -50% 0;
+  width: max-content;
+  max-width: 96px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: rgba(8, 6, 28, 0.62);
+  color: hsl(var(--h) 90% 90%);
+  font-size: 0.74rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-shadow: 0 1px 6px rgba(5, 4, 20, 0.9);
+  pointer-events: none;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+.moon:hover,
+.moon.is-on,
+.moon:focus-visible {
+  z-index: 3;
+}
+.moon:hover .moon__dot,
+.moon.is-on .moon__dot,
+.moon:focus-visible .moon__dot {
+  scale: 1.6;
+  box-shadow:
+    0 0 0 3px hsl(var(--h) 90% 80% / 0.18),
+    0 0 26px 4px hsl(var(--h) 90% 68% / 0.95);
+}
+.moon:hover .moon__label,
+.moon.is-on .moon__label,
+.moon:focus-visible .moon__label {
+  background: hsl(var(--h) 60% 22% / 0.92);
+  color: #fff;
+}
+.moon:focus-visible {
+  outline: none;
+}
+.moon:focus-visible .moon__dot {
+  outline: 2px solid var(--ice);
+  outline-offset: 4px;
+}
+
+/* --- side panel --- */
+.aisk__side {
+  display: grid;
+  gap: 14px;
+  padding: clamp(16px, 2vw, 24px);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  /* dark backing so the list stays readable over the large background planet */
+  background: rgba(8, 6, 28, 0.74);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+}
+.aisk__legend {
+  display: grid;
+  gap: 4px;
+}
+.aleg {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 12px;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: none;
+  color: inherit;
+  transition:
+    background 0.3s,
+    border-color 0.3s;
+}
+.aleg:hover {
+  background: hsl(var(--h) 70% 60% / 0.08);
+}
+.aleg.is-on {
+  background: hsl(var(--h) 70% 60% / 0.16);
+  border-color: hsl(var(--h) 80% 75% / 0.55);
+}
+.aleg:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 2px;
+}
+.aisk__legend i,
+.aisk__group h3 i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: hsl(var(--h) 85% 72%);
+  box-shadow: 0 0 12px hsl(var(--h) 90% 65% / 0.8);
+}
+.aisk__legend strong {
+  display: block;
+  font-weight: 500;
+  font-size: 0.97rem;
+}
+.aisk__legend small {
+  color: var(--ink-2);
+  font-size: 0.82rem;
+}
+.aisk__legend b {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.aisk__card {
+  padding: 20px 22px;
+  min-height: 190px;
+  display: grid;
+  align-content: center;
+  border-radius: 16px;
+  border: 1px solid var(--line-strong);
+  background: rgba(20, 14, 52, 0.7);
+}
+.aisk__hint {
+  color: var(--ink-2);
+}
+.moon-card {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  animation: sky-in 0.45s var(--ease);
+}
+.moon-card .eyebrow {
+  color: hsl(var(--h) 85% 82%);
+}
+.moon-card h4 {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.2;
+}
+.moon-card p {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+.moon-card .moon-card__used {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* --- compact (mobile) layout: stacked glowing chips --- */
+.aisk__stack {
+  display: grid;
+  gap: 26px;
+}
+.aisk__group {
+  display: grid;
+  gap: 14px;
+}
+.aisk__group h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+.aisk__group h3 i {
+  flex: none;
+}
+.aisk__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.aichip {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--h) 80% 75% / 0.4);
+  background: hsl(var(--h) 70% 60% / 0.1);
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.25;
+  text-align: left;
+  box-shadow: 0 0 16px hsl(var(--h) 85% 65% / 0.18);
+  transition:
+    background 0.3s,
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+.aichip.is-on {
+  border-color: hsl(var(--h) 90% 80%);
+  background: hsl(var(--h) 75% 60% / 0.24);
+  box-shadow: 0 0 24px hsl(var(--h) 90% 68% / 0.55);
+}
+.aisk__group .moon-card {
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--glass-strong);
+}
+
+@media (max-width: 1180px) {
+  .aisk__grid {
+    grid-template-columns: 1fr;
+  }
+  .aisk__side {
+    width: min(100%, 640px);
+    margin-inline: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aring,
+  .moon,
+  .acore::after {
+    animation: none;
+  }
+}
