@@ -475,6 +475,23 @@
   color: var(--ink);
   letter-spacing: -0.01em;
 }
+.about__big em {
+  font-style: italic;
+  font-weight: 300;
+  background: linear-gradient(100deg, var(--lavender), var(--pink) 60%, var(--ice));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+.about__tag {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--lavender);
+}
 .flightlog {
   padding: 28px;
 }
